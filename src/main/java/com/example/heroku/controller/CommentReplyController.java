@@ -16,7 +16,7 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequestMapping("/reply")
-@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
+@CrossOrigin(origins = {"http://localhost:8080","https://esvfront.web.app"}, allowedHeaders = "*")
 public class CommentReplyController {
 
     @Autowired

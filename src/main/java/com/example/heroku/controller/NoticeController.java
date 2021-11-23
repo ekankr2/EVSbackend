@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/notice")
-@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
+@CrossOrigin(origins = {"http://localhost:8080","https://esvfront.web.app"}, allowedHeaders = "*")
 @Slf4j
 public class NoticeController {
 

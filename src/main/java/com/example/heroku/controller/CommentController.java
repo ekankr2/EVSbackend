@@ -17,7 +17,7 @@ import java.util.Optional;
 @Slf4j
 @Controller
 @RequestMapping("/comment")
-@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
+@CrossOrigin(origins = {"http://localhost:8080","https://esvfront.web.app"}, allowedHeaders = "*")
 public class CommentController {
 
     @Autowired
