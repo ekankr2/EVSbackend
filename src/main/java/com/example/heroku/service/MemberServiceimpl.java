@@ -1,6 +1,7 @@
 package com.example.heroku.service;
 
 import com.example.heroku.controller.request.MemberRequest;
+import com.example.heroku.controller.request.MyCarStateRequest;
 import com.example.heroku.controller.request.MyChargingStateRequest;
 import com.example.heroku.entity.*;
 import com.example.heroku.repository.*;
@@ -39,6 +40,9 @@ public class MemberServiceimpl implements MemberService {
 
     @Autowired
     MyParkingStateRepository myParkingStateRepository;
+
+    @Autowired
+    MyCarStateRepository myCarStateRepository;
 
     @Override
     public void memberRegister(Member member) throws Exception {
@@ -185,7 +189,7 @@ public class MemberServiceimpl implements MemberService {
     @Override
     public void IDban(Long memberNo) throws Exception {
         String status = "정지";
-         memberRepository.IDban(memberNo,status);
+        memberRepository.IDban(memberNo,status);
     }
 
     @Override
@@ -241,17 +245,17 @@ public class MemberServiceimpl implements MemberService {
         String result = "이미 즐겨찾기에 등록되어있습니다.";
         String result2 ="즐겨찾기에 등록되었습니다.";
         List<MyChargingState> myChargingState1 = myChargingStateRepository.findByMemberall(memberNo);
-            for(int i = 0 ; i<myChargingState1.toArray().length; i++){
-                addrList.add(myChargingState1.get(i).getAddr());
+        for(int i = 0 ; i<myChargingState1.toArray().length; i++){
+            addrList.add(myChargingState1.get(i).getAddr());
 
-            }
-            if (addrList.indexOf(myChargingStateRequest.getAddr()) >= 0) {
-                return result;
-             } else if (addrList.indexOf(myChargingStateRequest.getAddr()) < 0) {
-                MyChargingState myChargingState = new MyChargingState(memberNo,myChargingStateRequest.getStatNm(),myChargingStateRequest.getChgerType(), myChargingStateRequest.getAddr(), myChargingStateRequest.getLat(), myChargingStateRequest.getLng(), myChargingStateRequest.getUseTime(), myChargingStateRequest.getBusiCall());
-                myChargingStateRepository.save(myChargingState);
-                return result2;
-                }
+        }
+        if (addrList.indexOf(myChargingStateRequest.getAddr()) >= 0) {
+            return result;
+        } else if (addrList.indexOf(myChargingStateRequest.getAddr()) < 0) {
+            MyChargingState myChargingState = new MyChargingState(memberNo,myChargingStateRequest.getStatNm(),myChargingStateRequest.getChgerType(), myChargingStateRequest.getAddr(), myChargingStateRequest.getLat(), myChargingStateRequest.getLng(), myChargingStateRequest.getUseTime(), myChargingStateRequest.getBusiCall());
+            myChargingStateRepository.save(myChargingState);
+            return result2;
+        }
 
 
 
@@ -314,6 +318,54 @@ public class MemberServiceimpl implements MemberService {
     public void deleteMyParkingState(Long rowNo) throws Exception {
         System.out.println(rowNo);
         myParkingStateRepository.deleteById(rowNo);
+    }
+
+
+    @Override
+    public String addMyCar(Long memberNo, MyCarStateRequest myCarStateRequest) {
+
+        ArrayList  addrList  = new ArrayList();
+        String result = "이미 즐겨찾기에 등록되어있습니다.";
+        String result2 ="즐겨찾기에 등록되었습니다.";
+        List<MyCarState> myChargingState1 = myCarStateRepository.findByMemberall(memberNo);
+        for(int i = 0 ; i<myChargingState1.toArray().length; i++){
+            addrList.add(myChargingState1.get(i).getCarType());
+
+        }
+        if (addrList.indexOf(myCarStateRequest.getCarType()) >= 0) {
+            return result;
+        } else if (addrList.indexOf(myCarStateRequest.getCarType()) < 0) {
+            MyCarState myCarState = new MyCarState(memberNo,myCarStateRequest.getCharge(),myCarStateRequest.getBrand(), myCarStateRequest.getBattery(), myCarStateRequest.getCarType(), myCarStateRequest.getPersonnel(), myCarStateRequest.getSpeed(), myCarStateRequest.getSubsidy());
+            myCarStateRepository.save(myCarState);
+            return result2;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        return "알수없는오류";
+
+
+    }
+
+    @Override
+    public List<MyCarState> getMyCarState(Long memberNo) throws Exception {
+        return myCarStateRepository.findByMemberall(memberNo);
+    }
+
+    @Override
+    public void deleteMyCar(Long rowNo) throws Exception {
+        System.out.println(rowNo);
+        myCarStateRepository.deleteById(rowNo);
     }
 }
 

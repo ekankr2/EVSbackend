@@ -1,8 +1,10 @@
 package com.example.heroku.service;
 
 import com.example.heroku.controller.request.MemberRequest;
+import com.example.heroku.controller.request.MyCarStateRequest;
 import com.example.heroku.controller.request.MyChargingStateRequest;
 import com.example.heroku.entity.Member;
+import com.example.heroku.entity.MyCarState;
 import com.example.heroku.entity.MyChargingState;
 import com.example.heroku.entity.MyParkingState;
 
@@ -64,4 +66,10 @@ public interface MemberService {
     public List<MyParkingState> getMyParkingState (Long memberNo) throws  Exception;
 
     public void deleteMyParkingState(Long rowNo) throws Exception;
+
+    public String addMyCar(Long memberNo, MyCarStateRequest myCarStateRequest);
+
+    public List<MyCarState> getMyCarState(Long memberNo) throws Exception;
+
+    public void deleteMyCar(Long rowNo) throws Exception;
 }

@@ -1,16 +1,16 @@
 package com.example.heroku.controller;
 
-import com.example.heroku.controller.request.MemberRequest;
+import com.example.heroku.controller.request.MyCarStateRequest;
 import com.example.heroku.controller.request.MyChargingStateRequest;
 import com.example.heroku.controller.vueCookie.UserInfo;
-import com.example.heroku.entity.Member;
-import com.example.heroku.entity.MyChargingState;
-import com.example.heroku.entity.MyParkingState;
+import com.example.heroku.entity.*;
 import com.example.heroku.service.MemberService;
+import com.example.heroku.controller.request.MemberRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/member")
-@CrossOrigin(origins = {"http://localhost:8080","https://esvfront.web.app"}, allowedHeaders = "*")
+@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
 @Slf4j
 public class MemberController {
 
@@ -41,19 +41,19 @@ public class MemberController {
         @PostMapping("/FindById")
         public ResponseEntity<List> FindById (@Validated @RequestBody MemberRequest memberRequest) throws  Exception {
                 String email = memberRequest.getEmail();
-              List result =   service.FindById(email);
+                List result =   service.FindById(email);
 
                 return  new ResponseEntity<>(result,HttpStatus.OK);
         }
 
-                @PostMapping("/FindBymemberImp")
-                public  ResponseEntity<Member> FindBymemberImp (@Validated @RequestBody MemberRequest memberRequest) throws  Exception {
-                        try {
-                                String memberId = memberRequest.getMemberId();
-                                Optional<Member> member = service.FindBymemberImp(memberId);
-                                Member member1 = member.get();
-                                return new ResponseEntity<>(member1, HttpStatus.OK);
-                        }
+        @PostMapping("/FindBymemberImp")
+        public  ResponseEntity<Member> FindBymemberImp (@Validated @RequestBody MemberRequest memberRequest) throws  Exception {
+                try {
+                        String memberId = memberRequest.getMemberId();
+                        Optional<Member> member = service.FindBymemberImp(memberId);
+                        Member member1 = member.get();
+                        return new ResponseEntity<>(member1, HttpStatus.OK);
+                }
                 catch (Exception e){
 
                         return  new ResponseEntity<>(null,HttpStatus.OK);
@@ -97,12 +97,12 @@ public class MemberController {
 
         @PostMapping("/login")
         public ResponseEntity<UserInfo> login (@Validated @RequestBody MemberRequest memberRequest) throws  Exception {
-                 info = new UserInfo();
-              Boolean isTrue = service.login(memberRequest);
-              Long memberNo = service.findByMemberNo(memberRequest);
-              String status = service.findByMemberStatus(memberRequest);
-              // memberNo로 회원 정보를 조회하는 코드 추가
-              Optional<Member> memberInfo = service.findByMemberInfo(memberNo);
+                info = new UserInfo();
+                Boolean isTrue = service.login(memberRequest);
+                Long memberNo = service.findByMemberNo(memberRequest);
+                String status = service.findByMemberStatus(memberRequest);
+                // memberNo로 회원 정보를 조회하는 코드 추가
+                Optional<Member> memberInfo = service.findByMemberInfo(memberNo);
                 if (isTrue){
 
                         info.setMemberId(memberRequest.getMemberId());
@@ -266,6 +266,30 @@ public class MemberController {
         public ResponseEntity<Void> deleteMyParkingState(@PathVariable("rowNo")Long rowNo) throws  Exception {
 
                 service.deleteMyParkingState(rowNo);
+
+                return new ResponseEntity<Void>(HttpStatus.OK);
+        }
+
+        @PostMapping("/addMyCar/{memberNo}")
+        public ResponseEntity<String> addMyCar (@PathVariable("memberNo")Long memberNo, @Validated @RequestBody MyCarStateRequest myCarStateRequest) throws  Exception {
+
+                String result =  service.addMyCar(memberNo, myCarStateRequest);
+
+                return new ResponseEntity<>(result,HttpStatus.OK);
+        }
+
+        @PostMapping("/getMyCarState/{memberNo}")
+        public ResponseEntity<List<MyCarState>> getMyCarState(@PathVariable("memberNo")Long memberNo) throws  Exception {
+
+                List<MyCarState> list = service.getMyCarState(memberNo);
+
+                return new ResponseEntity<>(list, HttpStatus.OK);
+        }
+
+        @PostMapping("/deleteMyCar/{rowNo}")
+        public ResponseEntity<Void> deleteMyCar(@PathVariable("rowNo")Long rowNo) throws  Exception {
+
+                service.deleteMyCar(rowNo);
 
                 return new ResponseEntity<Void>(HttpStatus.OK);
         }
