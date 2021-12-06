@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "CommentReport")
@@ -19,7 +21,7 @@ public class CommentReport {
     @Column(nullable = false)
     private Long reportNo;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Long commentNo;
 
     @Column(nullable = false)

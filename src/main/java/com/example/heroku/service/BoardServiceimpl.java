@@ -2,6 +2,7 @@ package com.example.heroku.service;
 
 import com.example.heroku.controller.request.BoardReportRequest;
 import com.example.heroku.controller.request.BoardRequest;
+import com.example.heroku.controller.request.MemberRequest;
 import com.example.heroku.entity.Board;
 import com.example.heroku.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import utility.python.BoardReportKakaoAlarmWithPython;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,7 +109,7 @@ public class BoardServiceimpl implements  BoardService {
     public List<Board> reportedTitleSearchList(String search) throws Exception {
         String report = "신고됨";
 
-       List<Board> list = boardRepository.titleSearchList(search);
+        List<Board> list = boardRepository.titleSearchList(search);
 
        /*
        List<Board> list2 =null;
@@ -135,5 +137,11 @@ public class BoardServiceimpl implements  BoardService {
     @Override
     public List<Board> findByMemberId(String memberId) throws Exception {
         return boardRepository.findByMemberId(memberId);
+    }
+
+    @Override
+    public void ReportPass(Long boardNo) throws Exception {
+        String  word = "클린";
+        boardRepository.passReporting(boardNo, word);
     }
 }

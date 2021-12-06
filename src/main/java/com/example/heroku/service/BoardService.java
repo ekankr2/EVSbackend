@@ -2,6 +2,7 @@ package com.example.heroku.service;
 
 import com.example.heroku.controller.request.BoardReportRequest;
 import com.example.heroku.controller.request.BoardRequest;
+import com.example.heroku.controller.request.MemberRequest;
 import com.example.heroku.entity.Board;
 
 import java.util.List;
@@ -42,4 +43,6 @@ public interface BoardService {
     public  List<Board> reportedMemberIdSearchList (String search) throws  Exception;
 
     public List<Board> findByMemberId(String memberId) throws Exception;
+
+    public  void ReportPass (Long boardNo) throws  Exception ;
 }

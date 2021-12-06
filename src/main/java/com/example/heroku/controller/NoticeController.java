@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +49,7 @@ public class NoticeController {
 
             for (MultipartFile multipartFile : fileList) {
                 log.info("requestUploadFile(): Make File");
-                FileOutputStream writer = new FileOutputStream("C:\\proj\\ESC\\frontend\\src\\assets\\게시판/"+randomNumToString+name+"의"+multipartFile.getOriginalFilename());
+                FileOutputStream writer = new FileOutputStream("C:\\1130ESC\\frontend\\src\\assets\\게시판/"+randomNumToString+name+"의"+multipartFile.getOriginalFilename());
                 writer.write(multipartFile.getBytes());
                 writer.close();
 
@@ -64,21 +65,21 @@ public class NoticeController {
 
         return "success!";
     }
-        @PostMapping("/getNoitceList")
-        public ResponseEntity<List<Notice>> getNoitceList () throws  Exception {
+    @PostMapping("/getNoitceList")
+    public ResponseEntity<List<Notice>> getNoitceList () throws  Exception {
 
         List<Notice> list = service.getNoitceList();
         Collections.reverse(list);
         return  new ResponseEntity<>(list,HttpStatus.OK);
-        }
+    }
 
-        @PostMapping("/viewcount/{boardNo}")
-        public ResponseEntity<Void> viewcount (@PathVariable("boardNo") Long boardNo) throws  Exception {
+    @PostMapping("/viewcount/{boardNo}")
+    public ResponseEntity<Void> viewcount (@PathVariable("boardNo") Long boardNo) throws  Exception {
 
         service.viewcount(boardNo);
 
         return  new ResponseEntity<>(HttpStatus.OK);
-        }
+    }
 
     @PostMapping("/titleSearchList/{search}")
     public ResponseEntity<List<Notice>>titleSearchList (@PathVariable("search") String search) throws  Exception {

@@ -1,9 +1,12 @@
 package com.example.heroku.repository;
 
 import com.example.heroku.entity.Board;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -63,7 +66,9 @@ public interface BoardRepository extends JpaRepository<Board,Long>  {
 
     List<Board> findByMemberId(String memberId);
 
-
-
+    @Transactional
+    @Modifying
+    @Query("UPDATE Board b set b.report = :word where b.boardNo = :boardNo")
+    void passReporting(Long boardNo , String word);
 
 }

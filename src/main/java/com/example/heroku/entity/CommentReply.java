@@ -1,5 +1,6 @@
 package com.example.heroku.entity;
 
+import com.example.heroku.controller.request.CommentRequest;
 import com.example.heroku.controller.request.ReplyRequest;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class CommentReply {
     @Column
     private Long replyNo;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Long commentNo;
 
     @Column(nullable = false)

@@ -252,7 +252,9 @@ public class MemberServiceimpl implements MemberService {
         if (addrList.indexOf(myChargingStateRequest.getAddr()) >= 0) {
             return result;
         } else if (addrList.indexOf(myChargingStateRequest.getAddr()) < 0) {
-            MyChargingState myChargingState = new MyChargingState(memberNo,myChargingStateRequest.getStatNm(),myChargingStateRequest.getChgerType(), myChargingStateRequest.getAddr(), myChargingStateRequest.getLat(), myChargingStateRequest.getLng(), myChargingStateRequest.getUseTime(), myChargingStateRequest.getBusiCall());
+            MyChargingState myChargingState = new MyChargingState(memberNo,myChargingStateRequest.getStatNm(),myChargingStateRequest.getChgerType(),
+                    myChargingStateRequest.getAddr(), myChargingStateRequest.getLat(), myChargingStateRequest.getLng(), myChargingStateRequest.getUseTime(),
+                    myChargingStateRequest.getBusiCall());
             myChargingStateRepository.save(myChargingState);
             return result2;
         }
@@ -335,7 +337,7 @@ public class MemberServiceimpl implements MemberService {
         if (addrList.indexOf(myCarStateRequest.getCarType()) >= 0) {
             return result;
         } else if (addrList.indexOf(myCarStateRequest.getCarType()) < 0) {
-            MyCarState myCarState = new MyCarState(memberNo,myCarStateRequest.getCharge(),myCarStateRequest.getBrand(), myCarStateRequest.getBattery(), myCarStateRequest.getCarType(), myCarStateRequest.getPersonnel(), myCarStateRequest.getSpeed(), myCarStateRequest.getSubsidy());
+            MyCarState myCarState = new MyCarState(memberNo,myCarStateRequest.getBrand(),myCarStateRequest.getCarType(), myCarStateRequest.getPersonnel(), myCarStateRequest.getSpeed(), myCarStateRequest.getCharge(), myCarStateRequest.getBattery(), myCarStateRequest.getSubsidy());
             myCarStateRepository.save(myCarState);
             return result2;
         }

@@ -1,9 +1,10 @@
 package com.example.heroku.controller;
 
 import com.example.heroku.controller.request.BoardReportRequest;
+import com.example.heroku.entity.Member;
+import com.example.heroku.service.BoardService;
 import com.example.heroku.controller.request.BoardRequest;
 import com.example.heroku.entity.Board;
-import com.example.heroku.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileOutputStream;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,12 +39,10 @@ public class BoardController {
         log.info("requestUploadFile(): " + fileList);
 
         try {
-            // 결국 저장되는 위치가 images/사진파일명.확장자
-            // images/아이디/사진파일명.확장자
 
             for (MultipartFile multipartFile : fileList) {
                 log.info("requestUploadFile(): Make File");
-                FileOutputStream writer = new FileOutputStream("C:\\EscLocal\\frontend\\src\\assets\\게시판/"+randomNumToString+name+"의"+multipartFile.getOriginalFilename());
+                FileOutputStream writer = new FileOutputStream("C:\\1130ESC\\frontend\\src\\assets\\게시판/"+randomNumToString+name+"의"+multipartFile.getOriginalFilename());
                 writer.write(multipartFile.getBytes());
                 writer.close();
 
@@ -60,17 +60,10 @@ public class BoardController {
     }
     @PostMapping("/boardRegister")
     public ResponseEntity<Void> boardRegister (@Validated @RequestBody BoardRequest boardRequest) throws  Exception{
-        /*
-        System.out.println("memberId:" + boardRequest.getMemberId());
-        System.out.println("title:" +boardRequest.getTitle());
-        System.out.println("content" +boardRequest.getContent());
-        System.out.println("img" + boardRequest.getImg());
-        System.out.println("category" +boardRequest.getCategory());
 
-         */
         service.boardRegister(boardRequest);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/getBoardList")
@@ -115,9 +108,9 @@ public class BoardController {
 
         Long boardNo = boardReportRequest.getBoardNo();
         service.report(boardNo,reportWord);
-        // 신고 버튼누를시 카톡 날라감 구현했지만, 파이썬작업진행중으로 막아놓겟습니다 2021/10/29
-       String check =  service.KakaotalkAlarm(boardReportRequest);
-         log.info("check"+check);
+
+        String check =  service.KakaotalkAlarm(boardReportRequest);
+        log.info("check"+check);
 
         return  new ResponseEntity<>(HttpStatus.OK);
     }
@@ -198,4 +191,12 @@ public class BoardController {
 
         return new ResponseEntity<List<Board>>(service.findByMemberId(memberId),HttpStatus.OK);
     }
- }
+
+    @PostMapping("/ReportPass/{boardNo}")
+    public ResponseEntity<Void> ReportPass (@PathVariable("boardNo") Long boardNo) throws  Exception {
+
+        service.ReportPass(boardNo);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+}
